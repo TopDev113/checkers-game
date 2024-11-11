@@ -30,6 +30,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	checkerskeeper "github.com/topdev113/checkers/keeper"
 
 	_ "cosmossdk.io/api/cosmos/tx/config/v1"          // import for side-effects
 	_ "github.com/cosmos/cosmos-sdk/x/auth"           // import for side-effects
@@ -39,6 +40,7 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/distribution"   // import for side-effects
 	_ "github.com/cosmos/cosmos-sdk/x/mint"           // import for side-effects
 	_ "github.com/cosmos/cosmos-sdk/x/staking"        // import for side-effects
+	_ "github.com/topdev113/checkers/module"          // import for side-effects
 )
 
 // DefaultNodeHome default home directories for the application daemon
@@ -68,6 +70,7 @@ type MiniApp struct {
 	StakingKeeper         *stakingkeeper.Keeper
 	DistrKeeper           distrkeeper.Keeper
 	ConsensusParamsKeeper consensuskeeper.Keeper
+	CheckersKeeper        checkerskeeper.Keeper
 
 	// simulation manager
 	sm *module.SimulationManager
@@ -127,6 +130,7 @@ func NewMiniApp(
 		&app.StakingKeeper,
 		&app.DistrKeeper,
 		&app.ConsensusParamsKeeper,
+		&app.CheckersKeeper,
 	); err != nil {
 		return nil, err
 	}
