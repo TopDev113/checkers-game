@@ -27,6 +27,9 @@ func (ms msgServer) CheckersCreateGm(ctx context.Context, msg *checkers.ReqCheck
 	if length := len([]byte(msg.Index)); checkers.MaxIndexLength < length || length < 1 {
 		return nil, checkers.ErrIndexTooLong
 	}
+	if _, err := ms.k.addressCodec.StringToBytes(msg.Creator); err != nil {
+		return nil, fmt.Errorf("invalid creator address: %w", err)
+	}
 	if _, err := ms.k.StoredGames.Get(ctx, msg.Index); err == nil || errors.Is(err, collections.ErrEncoding) {
 		return nil, fmt.Errorf("game already exists at index: %s", msg.Index)
 	}

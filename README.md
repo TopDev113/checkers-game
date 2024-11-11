@@ -135,7 +135,12 @@ cd ..
 make install
 ```
 
-### Test
+#### 3. Test modules
+
+```
+make test
+make test-integration
+```
 
 
 ### Troubleshooting
