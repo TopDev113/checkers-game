@@ -9,7 +9,8 @@ import (
 // RegisterInterfaces registers the interfaces types with the interface registry.
 func RegisterInterfaces(registry types.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgCreateGame{},
+		&ReqCheckersTorram{},
 	)
-	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
+
+	msgservice.RegisterMsgServiceDesc(registry, &_CheckersTorram_serviceDesc)
 }
