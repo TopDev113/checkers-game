@@ -49,3 +49,26 @@ func (ms msgServer) CheckersCreateGm(ctx context.Context, msg *checkers.ReqCheck
 
 	return &checkers.ResCheckersTorram{}, nil
 }
+
+// CheckersEndGm defines the handler for the ReqCheckersTorramEnd message.
+func (ms msgServer) CheckersEndGm(ctx context.Context, msg *checkers.ReqCheckersTorramEnd) (*checkers.ResCheckersTorram, error) {
+	if length := len([]byte(msg.Index)); checkers.MaxIndexLength < length || length < 1 {
+		return nil, checkers.ErrIndexTooLong
+	}
+
+	// Get a game from Store by Index.
+	storedGame, err := ms.k.StoredGames.Get(ctx, msg.Index)
+
+	if err != nil {
+		return nil, fmt.Errorf("game does not exist at index: %s", msg.Index)
+	}
+
+	storedGame.EndTime = time.Now().Unix()
+
+	// Save the updated game state
+	if err := ms.k.StoredGames.Set(ctx, msg.Index, storedGame); err != nil {
+		return nil, err
+	}
+
+	return &checkers.ResCheckersTorram{}, nil
+}

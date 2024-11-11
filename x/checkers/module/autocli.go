@@ -34,6 +34,14 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 						{ProtoField: "red"},
 					},
 				},
+				{
+					RpcMethod: "CheckersEndGm",
+					Use:       "end index",
+					Short:     "End a ongoing game at the index",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
+						{ProtoField: "index"},
+					},
+				},
 			},
 		},
 	}

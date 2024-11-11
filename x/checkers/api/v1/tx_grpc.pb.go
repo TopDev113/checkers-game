@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	CheckersTorram_CheckersCreateGm_FullMethodName = "/topdev113.checkers.v1.CheckersTorram/CheckersCreateGm"
+	CheckersTorram_CheckersEndGm_FullMethodName    = "/topdev113.checkers.v1.CheckersTorram/CheckersEndGm"
 )
 
 // CheckersTorramClient is the client API for CheckersTorram service.
@@ -28,6 +29,8 @@ const (
 type CheckersTorramClient interface {
 	// CheckersCreateGm create a game.
 	CheckersCreateGm(ctx context.Context, in *ReqCheckersTorram, opts ...grpc.CallOption) (*ResCheckersTorram, error)
+	// CheckersEndGm end a game.
+	CheckersEndGm(ctx context.Context, in *ReqCheckersTorramEnd, opts ...grpc.CallOption) (*ResCheckersTorram, error)
 }
 
 type checkersTorramClient struct {
@@ -47,12 +50,23 @@ func (c *checkersTorramClient) CheckersCreateGm(ctx context.Context, in *ReqChec
 	return out, nil
 }
 
+func (c *checkersTorramClient) CheckersEndGm(ctx context.Context, in *ReqCheckersTorramEnd, opts ...grpc.CallOption) (*ResCheckersTorram, error) {
+	out := new(ResCheckersTorram)
+	err := c.cc.Invoke(ctx, CheckersTorram_CheckersEndGm_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CheckersTorramServer is the server API for CheckersTorram service.
 // All implementations must embed UnimplementedCheckersTorramServer
 // for forward compatibility
 type CheckersTorramServer interface {
 	// CheckersCreateGm create a game.
 	CheckersCreateGm(context.Context, *ReqCheckersTorram) (*ResCheckersTorram, error)
+	// CheckersEndGm end a game.
+	CheckersEndGm(context.Context, *ReqCheckersTorramEnd) (*ResCheckersTorram, error)
 	mustEmbedUnimplementedCheckersTorramServer()
 }
 
@@ -62,6 +76,9 @@ type UnimplementedCheckersTorramServer struct {
 
 func (UnimplementedCheckersTorramServer) CheckersCreateGm(context.Context, *ReqCheckersTorram) (*ResCheckersTorram, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckersCreateGm not implemented")
+}
+func (UnimplementedCheckersTorramServer) CheckersEndGm(context.Context, *ReqCheckersTorramEnd) (*ResCheckersTorram, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckersEndGm not implemented")
 }
 func (UnimplementedCheckersTorramServer) mustEmbedUnimplementedCheckersTorramServer() {}
 
@@ -94,6 +111,24 @@ func _CheckersTorram_CheckersCreateGm_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CheckersTorram_CheckersEndGm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReqCheckersTorramEnd)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CheckersTorramServer).CheckersEndGm(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CheckersTorram_CheckersEndGm_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CheckersTorramServer).CheckersEndGm(ctx, req.(*ReqCheckersTorramEnd))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CheckersTorram_ServiceDesc is the grpc.ServiceDesc for CheckersTorram service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -104,6 +139,10 @@ var CheckersTorram_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckersCreateGm",
 			Handler:    _CheckersTorram_CheckersCreateGm_Handler,
+		},
+		{
+			MethodName: "CheckersEndGm",
+			Handler:    _CheckersTorram_CheckersEndGm_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
